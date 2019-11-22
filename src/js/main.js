@@ -1,40 +1,30 @@
-const letter= [
-    'q',
-    's',
-    'd',
-    'p',
-    'g',
-    'h',
-    'j',
-    'k',
-    'l'
-];
-
-
 function playAudio(event){
     const audio = document.querySelector(`audio[data-key="${event.key}"]`);
     const key = document.querySelector(`div[data-key="${event.key}"]`);
-    audio.currentTime = 0;
-    audio.play();
-    key.classList.add('playing');
+    if (key){
+        audio.currentTime = 0;
+        audio.play();
+        key.classList.add('playing');
+        key.addEventListener("transitionend", function(event) {
+            event.currentTarget.classList.remove('playing');
+        });
+    }
+}
+
+
+const buttons = document.querySelectorAll('.keys .key');
+function changeBackground(event){
+    for (let button of buttons){
+        document.body.classList.add(`${event.key}`);
+        button.addEventListener("transitionend", function() {
+            document.body.classList.remove("q", "s", "d", "f", "g", "h", "j", "k", "l");
+        });
+    }
 }
 
 window.addEventListener('keydown',  playAudio);
+document.body.addEventListener('keydown',  changeBackground);
 
 
 
-//function removeTransition(e) {
-//    if (e.propertyName !== 'transform') return;
-//    e.target.classList.remove('playing');
-//}
-//function playSound(e) {
-//    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-//    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
-//    if (!audio) return;
-//    key.classList.add('playing');
-//    audio.currentTime = 0;
-//    audio.play();
-//}
-//const keys = Array.from(document.querySelectorAll('.key'));
-//keys.forEach(key => key.addEventListener('transitionend', removeTransition));
-//window.addEventListener('keydown', playSound);
+
